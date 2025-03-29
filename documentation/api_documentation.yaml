@@ -1,8 +1,99 @@
-# Add this to the 'paths' section of the OpenAPI documentation:
-  /metrics:
+# Available Metric Keys
+
+The following metric keys are available for use with the /metrics/{metric_key} endpoint:
+
+## World Population Metrics
+- WORLD_POPULATION: Current world population
+- BIRTHS_TODAY: Number of births today
+- BIRTHS_THIS_YEAR: Number of births this year
+- DEATHS_TODAY: Number of deaths today
+- DEATHS_THIS_YEAR: Number of deaths this year
+- NET_POPULATION_GROWTH_TODAY: Net population growth today
+- NET_POPULATION_GROWTH_THIS_YEAR: Net population growth this year
+
+## Government and Economics Metrics
+- PUBLIC_HEALTHCARE_EXPENDITURE_TODAY: Public healthcare expenditure today
+- PUBLIC_EDUCATION_EXPENDITURE_TODAY: Public education expenditure today
+- PUBLIC_MILITARY_EXPENDITURE_TODAY: Public military expenditure today
+- CARS_PRODUCED_THIS_YEAR: Number of cars produced this year
+- BICYCLES_PRODUCED_THIS_YEAR: Number of bicycles produced this year
+- COMPUTERS_PRODUCED_THIS_YEAR: Number of computers produced this year
+
+## Society and Media Metrics
+- NEW_BOOK_TITLES_PUBLISHED_THIS_YEAR: Number of new book titles published this year
+- NEWSPAPERS_CIRCULATED_TODAY: Number of newspapers circulated today
+- TV_SETS_SOLD_WORLDWIDE_TODAY: Number of TV sets sold worldwide today
+- CELLULAR_PHONES_SOLD_TODAY: Number of cellular phones sold today
+- MONEY_SPENT_ON_VIDEOGAMES_TODAY: Money spent on videogames today
+- INTERNET_USERS_IN_THE_WORLD_TODAY: Number of internet users in the world today
+- EMAILS_SENT_TODAY: Number of emails sent today
+- BLOG_POSTS_WRITTEN_TODAY: Number of blog posts written today
+- TWEETS_SENT_TODAY: Number of tweets sent today
+- GOOGLE_SEARCHES_TODAY: Number of Google searches today
+
+## Environment Metrics
+- FOREST_LOSS_THIS_YEAR: Forest loss this year
+- LAND_LOST_TO_SOIL_EROSION_THIS_YEAR: Land lost to soil erosion this year
+- CO2_EMISSIONS_THIS_YEAR: CO2 emissions this year
+- DESERTIFICATION_THIS_YEAR: Desertification this year
+- TOXIC_CHEMICALS_RELEASED_THIS_YEAR: Toxic chemicals released in the environment this year
+
+## Food Metrics
+- UNDERNOURISHED_PEOPLE: Number of undernourished people in the world
+- OVERWEIGHT_PEOPLE: Number of overweight people in the world
+- OBESE_PEOPLE: Number of obese people in the world
+- PEOPLE_DIED_OF_HUNGER_TODAY: Number of people who died of hunger today
+- MONEY_SPENT_FOR_OBESITY_RELATED_DISEASES_USA_TODAY: Money spent for obesity-related diseases in the USA today
+- MONEY_SPENT_ON_WEIGHT_LOSS_PROGRAMS_USA_TODAY: Money spent on weight loss programs in the USA today
+
+## Water Metrics
+- WATER_USED_THIS_YEAR: Water used this year
+- DEATHS_CAUSED_BY_WATER_RELATED_DISEASES_THIS_YEAR: Deaths caused by water-related diseases this year
+- PEOPLE_WITH_NO_ACCESS_TO_SAFE_DRINKING_WATER: Number of people with no access to a safe drinking water source
+
+## Energy Metrics
+- ENERGY_USED_TODAY: Energy used today
+- NON_RENEWABLE_SOURCES: Energy from non-renewable sources
+- RENEWABLE_SOURCES: Energy from renewable sources
+- SOLAR_ENERGY_STRIKING_EARTH_TODAY: Solar energy striking Earth today
+- OIL_PUMPED_TODAY: Oil pumped today
+- OIL_LEFT: Oil left
+- DAYS_TO_THE_END_OF_OIL: Days to the end of oil
+- NATURAL_GAS_LEFT: Natural gas left
+- DAYS_TO_THE_END_OF_NATURAL_GAS: Days to the end of natural gas
+- COAL_LEFT: Coal left
+- DAYS_TO_THE_END_OF_COAL: Days to the end of coal
+
+## Health Metrics
+- COMMUNICABLE_DISEASE_DEATHS_THIS_YEAR: Deaths from communicable diseases this year
+- SEASONAL_FLU_DEATHS_THIS_YEAR: Deaths from seasonal flu this year
+- DEATHS_OF_CHILDREN_UNDER_5_THIS_YEAR: Deaths of children under 5 this year
+- ABORTIONS_THIS_YEAR: Number of abortions this year
+- DEATHS_OF_MOTHERS_DURING_BIRTH_THIS_YEAR: Deaths of mothers during birth this year
+- HIV_AIDS_INFECTED_PEOPLE: Number of HIV/AIDS infected people
+- DEATHS_CAUSED_BY_HIV_AIDS_THIS_YEAR: Deaths caused by HIV/AIDS this year
+- DEATHS_CAUSED_BY_CANCER_THIS_YEAR: Deaths caused by cancer this year
+- DEATHS_CAUSED_BY_MALARIA_THIS_YEAR: Deaths caused by malaria this year
+- CIGARETTES_SMOKED_TODAY: Number of cigarettes smoked today
+- DEATHS_CAUSED_BY_SMOKING_THIS_YEAR: Deaths caused by smoking this year
+- DEATHS_CAUSED_BY_ALCOHOL_THIS_YEAR: Deaths caused by alcohol this year
+- SUICIDES_THIS_YEAR: Number of suicides this year
+- MONEY_SPENT_ON_ILLEGAL_DRUGS_THIS_YEAR: Money spent on illegal drugs this year
+- ROAD_TRAFFIC_ACCIDENT_FATALITIES_THIS_YEAR: Road traffic accident fatalities this year
+
+# API Endpoints
+
+  /metrics/{metric_key}:
     get:
-      summary: List all available metrics
-      description: Returns a list of all available metric keys with their descriptions and units. If live data cannot be fetched, the API will return fallback data with an indicator flag.
+      summary: Get a specific metric
+      description: Returns the current value and change rate for a specific metric. If live data cannot be fetched, the API will return fallback data with an indicator flag.
+      parameters:
+        - name: metric_key
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The key of the metric to retrieve (see Available Metric Keys section above)
       responses:
         '200':
           description: Successful response
@@ -23,81 +114,67 @@
                     description: Indicates whether the data is live or fallback data
                     example: false
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        metric_key:
-                          type: string
-                          example: "WORLD_POPULATION"
-                        name:
-                          type: string
-                          example: "World Population"
-                        description:
-                          type: string
-                          example: "Current estimated world population"
-                        unit:
-                          type: string
-                          example: "people"
-                        value:
-                          type: number
-                          example: 8000000000
-                        change_per_minute:
-                          type: number
-                          example: 150
-                      required:
-                        - metric_key
-                        - name
-                        - description
-                        - unit
-                        - value
-                        - change_per_minute
+                    type: object
+                    properties:
+                      metric_key:
+                        type: string
+                        example: "WORLD_POPULATION"
+                      name:
+                        type: string
+                        example: "World Population"
+                      description:
+                        type: string
+                        example: "Current estimated world population"
+                      unit:
+                        type: string
+                        example: "people"
+                      value:
+                        type: number
+                        example: 8000000000
+                      change_per_minute:
+                        type: number
+                        example: 150
+                    required:
+                      - metric_key
+                      - name
+                      - description
+                      - unit
+                      - value
+                      - change_per_minute
               example:
                 success: true
                 timestamp: "2023-11-08T14:32:17Z"
                 is_fallback: false
                 data:
-                  - metric_key: "WORLD_POPULATION"
-                    name: "World Population"
-                    description: "Current estimated world population"
-                    unit: "people"
-                    value: 8000000000
-                    change_per_minute: 150
-                  - metric_key: "GLOBAL_CO2_PPM" 
-                    name: "Atmospheric CO2"
-                    description: "Atmospheric CO2 concentration"
-                    unit: "parts per million"
-                    value: 420
-                    change_per_minute: 0.1
-                  - metric_key: "BITCOIN_PRICE_USD"
-                    name: "Bitcoin Price"
-                    description: "Current Bitcoin price"
-                    unit: "USD"
-                    value: 45000
-                    change_per_minute: -50
+                  metric_key: "WORLD_POPULATION"
+                  name: "World Population"
+                  description: "Current estimated world population"
+                  unit: "people"
+                  value: 8000000000
+                  change_per_minute: 150
               example:
                 success: true
                 timestamp: "2023-11-08T14:32:17Z"
                 is_fallback: true
                 data:
-                  - metric_key: "WORLD_POPULATION"
-                    name: "World Population"
-                    description: "Current estimated world population"
-                    unit: "people"
-                    value: 7999850000
-                    change_per_minute: 145
-                  - metric_key: "GLOBAL_CO2_PPM" 
-                    name: "Atmospheric CO2"
-                    description: "Atmospheric CO2 concentration"
-                    unit: "parts per million"
-                    value: 419.5
-                    change_per_minute: 0.08
-                  - metric_key: "BITCOIN_PRICE_USD"
-                    name: "Bitcoin Price"
-                    description: "Current Bitcoin price"
-                    unit: "USD"
-                    value: 44800
-                    change_per_minute: -45
+                  metric_key: "WORLD_POPULATION"
+                  name: "World Population"
+                  description: "Current estimated world population"
+                  unit: "people"
+                  value: 7999850000
+                  change_per_minute: 145
+        '400':
+          description: Invalid metric key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                timestamp: "2023-11-08T14:32:17Z"
+                error:
+                  code: "INVALID_METRIC"
+                  message: "The specified metric key is not supported"
         '401':
           description: Unauthorized
           content:
@@ -134,4 +211,4 @@
                 timestamp: "2023-11-08T14:32:17Z"
                 error:
                   code: "INTERNAL_ERROR"
-                  message: "Unable to retrieve metrics list at this time. Please try again later"
+                  message: "Unable to retrieve metric at this time. Please try again later"

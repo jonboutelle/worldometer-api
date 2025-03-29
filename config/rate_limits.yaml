@@ -1,0 +1,15 @@
+# Rate Limiting Configuration
+# These values can be adjusted based on your needs
+
+# Per-minute rate limit
+minute_limit: 60  # Maximum requests allowed per minute
+
+# Per-day rate limit
+day_limit: 1000   # Maximum requests allowed per day
+
+# Window durations (in seconds)
+minute_window: 60    # 1 minute
+day_window: 86400    # 24 hours
+
+# Cleanup settings
+cleanup_interval: 3600  # Run cleanup every hour (in seconds) 
