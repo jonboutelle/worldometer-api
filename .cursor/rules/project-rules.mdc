@@ -6,6 +6,25 @@ alwaysApply: false
 
 # Your rule content
 
+## Docker and Development Environment
+
+*   **Container-First Development:**
+
+    *   All development tools and dependencies MUST be installed inside Docker containers, never on the host machine.
+    *   Global installations (e.g., npm -g, pip install --global) are strictly prohibited.
+    *   Required tools (e.g., Vercel CLI, npm, Python packages) must be documented in Dockerfile or docker-compose.yml.
+    *   Development environment setup must be automated through Docker configuration.
+    *   Any CLI tools needed for development or deployment must be run from within containers.
+
+*   **Docker Best Practices:**
+
+    *   Use multi-stage builds when appropriate to minimize final image size.
+    *   Document all environment variables in .env.example.
+    *   Include clear instructions in README.md for setting up the development environment.
+    *   Version lock all dependencies in Dockerfile and requirements.txt.
+    *   Use docker-compose.yml for development environment setup.
+
+
 ## Project Overview
 
 *   **Type:** cursor_project_rules

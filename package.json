@@ -1,0 +1,20 @@
+{
+  "name": "worldometer-api",
+  "version": "1.0.0",
+  "description": "A REST API service that exposes real-time world data from Worldometer's live counters. This API provides up-to-date metrics such as current population figures, births, deaths, and net population growth, along with calculated change rates per minute.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jonboutelle/worldometer-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jonboutelle/worldometer-api/issues"
+  },
+  "homepage": "https://github.com/jonboutelle/worldometer-api#readme"
+}
