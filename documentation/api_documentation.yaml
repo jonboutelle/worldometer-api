@@ -1,0 +1,137 @@
+# Add this to the 'paths' section of the OpenAPI documentation:
+  /metrics:
+    get:
+      summary: List all available metrics
+      description: Returns a list of all available metric keys with their descriptions and units. If live data cannot be fetched, the API will return fallback data with an indicator flag.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2023-11-08T14:32:17Z"
+                  is_fallback:
+                    type: boolean
+                    description: Indicates whether the data is live or fallback data
+                    example: false
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        metric_key:
+                          type: string
+                          example: "WORLD_POPULATION"
+                        name:
+                          type: string
+                          example: "World Population"
+                        description:
+                          type: string
+                          example: "Current estimated world population"
+                        unit:
+                          type: string
+                          example: "people"
+                        value:
+                          type: number
+                          example: 8000000000
+                        change_per_minute:
+                          type: number
+                          example: 150
+                      required:
+                        - metric_key
+                        - name
+                        - description
+                        - unit
+                        - value
+                        - change_per_minute
+              example:
+                success: true
+                timestamp: "2023-11-08T14:32:17Z"
+                is_fallback: false
+                data:
+                  - metric_key: "WORLD_POPULATION"
+                    name: "World Population"
+                    description: "Current estimated world population"
+                    unit: "people"
+                    value: 8000000000
+                    change_per_minute: 150
+                  - metric_key: "GLOBAL_CO2_PPM" 
+                    name: "Atmospheric CO2"
+                    description: "Atmospheric CO2 concentration"
+                    unit: "parts per million"
+                    value: 420
+                    change_per_minute: 0.1
+                  - metric_key: "BITCOIN_PRICE_USD"
+                    name: "Bitcoin Price"
+                    description: "Current Bitcoin price"
+                    unit: "USD"
+                    value: 45000
+                    change_per_minute: -50
+              example:
+                success: true
+                timestamp: "2023-11-08T14:32:17Z"
+                is_fallback: true
+                data:
+                  - metric_key: "WORLD_POPULATION"
+                    name: "World Population"
+                    description: "Current estimated world population"
+                    unit: "people"
+                    value: 7999850000
+                    change_per_minute: 145
+                  - metric_key: "GLOBAL_CO2_PPM" 
+                    name: "Atmospheric CO2"
+                    description: "Atmospheric CO2 concentration"
+                    unit: "parts per million"
+                    value: 419.5
+                    change_per_minute: 0.08
+                  - metric_key: "BITCOIN_PRICE_USD"
+                    name: "Bitcoin Price"
+                    description: "Current Bitcoin price"
+                    unit: "USD"
+                    value: 44800
+                    change_per_minute: -45
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                timestamp: "2023-11-08T14:32:17Z"
+                error:
+                  code: "UNAUTHORIZED"
+                  message: "Missing or invalid API key"
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                timestamp: "2023-11-08T14:32:17Z"
+                error:
+                  code: "RATE_LIMIT_EXCEEDED"
+                  message: "API rate limit exceeded. Please reduce request frequency or upgrade your plan"
+                  retry_after: 60
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              example:
+                success: false
+                timestamp: "2023-11-08T14:32:17Z"
+                error:
+                  code: "INTERNAL_ERROR"
+                  message: "Unable to retrieve metrics list at this time. Please try again later"

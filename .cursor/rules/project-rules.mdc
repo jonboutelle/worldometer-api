@@ -1,0 +1,111 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+
+# Your rule content
+
+## Project Overview
+
+*   **Type:** cursor_project_rules
+*   **Description:** I want to build a REST API that exposes live data from the worldometer.info page using a Python API. The REST API will focus on the "Live Counters" section of the worldometer API and compute an additional metric, change_per_minute, by comparing the current value with a historical record stored in a Supabase database (with UTC ISO8601 timestamps). The API is designed to trigger the Python API on-demand, ensuring minimal load on the worldometer website, and implements robust error handling with logging and fallback data when necessary.
+*   **Primary Goal:** Expose the critical world population metrics (current_population, births_today, births_this_year, deaths_today, deaths_this_year, net_population_growth_today, net_population_growth_this_year) along with a computed change_per_minute, all through a single REST endpoint, while gracefully handling errors from the Python API and headless browser.
+
+## Project Structure
+
+### Framework-Specific Routing
+
+*   **Directory Rules:**
+
+    *   **fastapi:** Utilize the FastAPI framework to structure the project. Routes should be defined under an organized directory structure.
+    *   Example: "FastAPI" → Use `app/main.py` as the entry point and `app/routes/` for endpoint definitions.
+    *   Example: Organize each API group under sub-folders in `app/routes/` such as `app/routes/live_counters.py` for live counter endpoints.
+
+### Core Directories
+
+*   **Versioned Structure:**
+
+    *   **app/api:** Contains all FastAPI REST API endpoint implementations.
+    *   **app/models:** Defines database models and schemas for Supabase integration (storing key, value, timestamp records).
+    *   **app/utils:** Includes utility modules such as error handling, logging configuration, and helper functions to calculate change_per_minute.
+
+### Key Files
+
+*   **Stack-Versioned Patterns:**
+
+    *   **app/main.py:** FastAPI application entry point that includes routing and middleware setups.
+    *   **app/routes/live_counters.py:** Houses the endpoint implementation for retrieving live counter metrics and computing change_per_minute.
+    *   **app/utils/logger.py:** Configuration for Python’s logging module to capture errors and operational events.
+
+## Tech Stack Rules
+
+*   **Version Enforcement:**
+
+    *   **<python@3.x>:** Ensure compatibility with all libraries including FastAPI and headless browser frameworks.
+    *   **fastapi:** REST API framework to be used exclusively for request handling; endpoints must be organized under `app/routes`.
+    *   **supabase:** Client integration to interact with the Supabase database, ensuring historical records are stored in UTC ISO8601 format.
+    *   **worldometer:** Leverage the Python API for fetching live counters from worldometer.info via a headless browser.
+    *   **python_logging:** Utilize Python's logging module to log errors, exceptions, and operational events reliably.
+    *   **cursor:** Use Cursor as an AI-powered coding assistant to enhance development efficiency.
+
+## PRD Compliance
+
+*   **Non-Negotiable:**
+
+    *   "The REST API must expose live counter metrics along with a computed change_per_minute by comparing current values with a stored historical record from Supabase, and should provide fallback data with an identifying flag if errors occur." : This requirement mandates that the API call the Python API only on-demand, avoid continuous polling, and include full error logging using Python’s logging module.
+
+## App Flow Integration
+
+*   **Stack-Aligned Flow:**
+
+    *   Example: "FastAPI Live Counters Flow" → When a client calls the endpoint defined in `app/routes/live_counters.py`, the system triggers the Python API to fetch current data from worldometer.info. It then retrieves the latest historical record from Supabase, calculates change_per_minute, and returns a JSON payload containing all live counters. In the event of an error (e.g., headless browser failure), the endpoint responds with fallback data and sets a flag to indicate non-live data.
+
+## Best Practices
+
+*   **Python**
+
+    *   Write modular and testable code using functions and classes.
+    *   Implement comprehensive exception handling, especially around external API calls and headless browser interactions.
+    *   Adhere to PEP8 style guidelines for code clarity and maintainability.
+
+*   **FastAPI**
+
+    *   Use dependency injection to manage services like database connections.
+    *   Document endpoints and responses clearly using FastAPI’s built-in documentation features.
+    *   Configure middleware for systematic error handling and logging.
+
+*   **Supabase**
+
+    *   Ensure efficient database interactions using asynchronous operations where possible.
+    *   Always store timestamps in UTC ISO8601 format for consistency.
+    *   Maintain a single historical record per key to simplify rate calculation logic.
+
+*   **worldometer (Python API Integration)**
+
+    *   Keep the headless browser session active only as long as necessary to fetch data.
+    *   Handle potential errors (e.g., site downtime or browser crashes) gracefully.
+    *   Ensure that data is fetched on-demand to minimize load on the worldometer website.
+
+*   **python_logging**
+
+    *   Configure logging to capture errors, warnings, and debug information.
+    *   Use rotating file handlers if persistent logging is required.
+    *   Ensure log entries are detailed enough to facilitate troubleshooting.
+
+*   **cursor**
+
+    *   Use Cursor for real-time coding assistance and to streamline development processes.
+    *   Regularly review AI-generated suggestions to ensure they adhere to project rules and best practices.
+    *   Integrate Cursor feedback into a continuous improvement workflow.
+
+## Rules
+
+*   Derive folder/file patterns **directly** from the tech stack specifications and version requirements provided.
+*   For FastAPI projects: enforce an `app/` directory with nested route folders (e.g., `app/routes`).
+*   REST API endpoints must be structured to initiate calls to the Python API on-demand rather than through continuous background polling.
+*   Maintain a clear separation between business logic, routing, and error handling modules.
+*   Avoid mixing synchronous and asynchronous code patterns to maintain consistency and reliability across the project.
+*   Always verify the availability of worldometer data and, if not available, provide fallback responses with an appropriate flag and error logs.
+*   Do not bypass comprehensive error handling and logging practices as dictated by the integration of python_logging.
+
